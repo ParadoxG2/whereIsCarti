@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>Image Comparison</title>
+</head>
+
+<style>
+    *{
+        font-family: Arial, sans-serif;
+        
+    }
+    #imageForm{
+    
+    }
+    .formbox{
+        border: 3px solid #000000;
+        padding: 7px;
+        height: 50%;
+        width:fit-content;
+        margin: 3px;
+        display: inline-block;
+        overflow: scroll;
+        max-height: 700px;
+        
+    }
+
+    .display{
+        scale: 1;
+
+    }
+    
+    #gridContainer1{
+        position: relative;
+        top: -9px;
+        left: -3px;
+        border: 2px solid #000000;
+        pad: 0%;
+    }
+
+    #gridContainer2{
+        position: relative;
+        top: -9px;
+        left: -3px;
+        border: 2px solid #000000;
+        pad: 0%;
+    }
+    #gridContainer3{
+        position: relative;
+        top: 0.5%;
+        left: 0%;
+        border: 2px solid #000000;
+        pad: 0%;
+    }
+    #result{
+        left: 50%;
+    }
+</style>
+
+<body>
+    <h1>Image Comparison <b style="color: #ee0c0c;">BIG BIG BIG TEST MODE!!!!!</b></h1>
+    <form id="imageForm">
+
+
+        <div class="formbox">    
+            <label for="image1">Select first image:</label>
+            <p>THIS IS THE OG IMIGE EVRYTHING THAT STAYS WILL BE RED</p>
+            <input type="file" id="image1" name="image1" accept="image/png, image/jpeg" onchange="previwImage(1)"><br><br>
+            <img class="display" id="display1">
+            <div id="gridContainer1"></div>
+        </div>
+
+        <div class="formbox">
+            <label for="image2">Select second image:</label>
+            <P>THIS IS A MODIFIED IMIGE ANY ALTERED WILL BE MARKED GREEN</P>
+            <input type="file" id="image2" name="image2" accept="image/png, image/jpeg" onchange="previwImage(2)"><br><br>
+            <img class="display" id="display2">
+            <div id="gridContainer2"></div>
+        </div>
+        <br>
+        <br>
+
+        <label for="boxnumber"><b style="color: #ffae00;">Sample size:</b></label>
+            <input type="number" id="boxnumber" name="boxnumber" placeholder="Enter number of boxes" required><br><br>
+            
+        <label for="threshold"><b style="color: #ffae00;">Threshold:</b></label>
+            <input type="number" id="threshold" name="threshold" placeholder="Enter threshold" required><br><br>
+
+
+        <label for="opacity"><b style="color: #ffae00;">Overlay Opacity:</b></label>
+            <input type="range" max="100" min="0" value="50" id="opacity" name="opacity" placeholder="Enter opacity" onchange="opacitySlider()" required><br><br>
+
+            <button type="submit">Compare Images</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <p>Here is a silly cat hehe :3 | stops dancing with browser lag</p> <p id="booptx"></p>
+    <img id="kisser1" style="max-width: 200px;" src="https://i.kym-cdn.com/photos/images/newsfeed/002/707/471/8cf.gif" onclick="secret('booper')"></img>
+    <img id="kisser2" style="max-width: 200px; display: none;" src="https://media.tenor.com/zAwceKZ5To8AAAAM/boy-kisser-boop.gif" onclick=""></img>
+    <br>
+    <br>
+    <br>
+    <p>The dimantions of the sample aria are always a box and can not be changed!</p>
+    <p>The sample size is the abount of little squares that is sampeld from the imige <b style="color: #ee0c0c;">MUST BE WITHING ASPECT RATIO OF IMIGE. !! BIG IMPACT ON PERFORMANCE/TIME TILL OUTPUT !!</b> </p>
+    <p>For example, if the image is a 9:9 aspect ratio tou could use 60 or 30 or 150 the imige has to be big enough for some of thoes though.</p>
+    <br>
+    <p> the threthhold is the amount of leyway the algorithm gives the imige when comparing <b>3</b> is a good starting number but feel free to experiment all you want.</p>
+    <p> The bigger the number the more acurate the agorithm will probobly be but it will also probobly miss more spots!!!!! </p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="result">
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
