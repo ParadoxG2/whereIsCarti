@@ -7,6 +7,8 @@
     <title>Image Comparison</title>
 </head>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
     *{
         font-family: Arial, sans-serif;
@@ -66,7 +68,7 @@
 
         <div class="formbox">    
             <label for="image1">Select first image:</label>
-            <p>THIS IS THE OG IMIGE EVRYTHING THAT STAYS WILL BE RED</p>
+            <p>THIS IS THE OG IMIGE EVRYTHING THAT STAYS WILL BE GREEN</p>
             <input type="file" id="image1" name="image1" accept="image/png, image/jpeg" onchange="previwImage(1)"><br><br>
             <img class="display" id="display1">
             <div id="gridContainer1"></div>
@@ -74,7 +76,7 @@
 
         <div class="formbox">
             <label for="image2">Select second image:</label>
-            <P>THIS IS A MODIFIED IMIGE ANY ALTERED WILL BE MARKED GREEN</P>
+            <P>THIS IS A MODIFIED IMIGE ANY ALTERED WILL BE MARKED RED</P>
             <input type="file" id="image2" name="image2" accept="image/png, image/jpeg" onchange="previwImage(2)"><br><br>
             <img class="display" id="display2">
             <div id="gridContainer2"></div>
@@ -84,6 +86,9 @@
 
         <label for="boxnumber"><b style="color: #ffae00;">Sample size:</b></label>
             <input type="number" id="boxnumber" name="boxnumber" placeholder="Enter number of boxes" required><br><br>
+        
+        <label for="pixle"><b style="color: #ffae00;">Pixle Perfect Checks? <i class="fa-solid fa-skull-crossbones" style="color: #ee0c0c;"></i>:</b></label>
+            <input type="checkbox" id="pixle" type="ch"><br><br>
             
         <label for="threshold"><b style="color: #ffae00;">Threshold:</b></label>
             <input type="number" id="threshold" name="threshold" placeholder="Enter threshold" required><br><br>

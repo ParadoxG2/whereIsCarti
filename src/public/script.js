@@ -1,4 +1,7 @@
+
 // imige colors
+
+
 
 // debug var
 var debugnis = false;
@@ -11,6 +14,7 @@ document.getElementById('imageForm').addEventListener('submit', async (event) =>
     const image2 = document.getElementById('image2').files[0];
     const boxnum = document.getElementById('boxnumber').value;
     const leyway = document.getElementById('threshold').value;
+    const pixleperfect = document.getElementById('pixle').value;
 
     console.warn("SUBNITING!!!");
     console.warn(`boxNumber: ${boxnum}`);
@@ -43,7 +47,15 @@ document.getElementById('imageForm').addEventListener('submit', async (event) =>
         display2.style.height = slmallest.height + 'px';
         display2.style.width = slmallest.width + 'px';
 
-        createGrid(boxnum, slmallest.width, slmallest.height, display1, display2, Math.floor(leyway));
+        const canvass1 = new cnver(display1, slmallest.width, slmallest.height).getctx();
+        const canvass2 = new cnver(display2, slmallest.width, slmallest.height).getctx();
+
+        if(pixleperfect) {
+          console.log(`pixle perfect mode enabled size: ${slmallest.width}`);
+          createGrid(slmallest.width, slmallest.width, slmallest.height, canvass1, canvass2, Math.floor(leyway));
+        } else {
+        createGrid(boxnum, slmallest.width, slmallest.height, canvass1, canvass2, Math.floor(leyway));
+        }
 
       } else {
         console.log('Image 2 is smaller');
@@ -58,7 +70,15 @@ document.getElementById('imageForm').addEventListener('submit', async (event) =>
         display2.style.height = slmallest.height + 'px';
         display2.style.width = slmallest.width + 'px';
 
-        createGrid(boxnum, slmallest.width, slmallest.height, display1, display2, Math.floor(leyway));
+        const canvass1 = new cnver(display1, slmallest.width, slmallest.height).getctx();
+        const canvass2 = new cnver(display2, slmallest.width, slmallest.height).getctx();
+
+        if(pixleperfect) {
+          console.log(`pixle perfect mode enabled size: ${slmallest.width}`);
+          createGrid(slmallest.width, slmallest.width, slmallest.height, canvass1, canvass2, Math.floor(leyway));
+        } else {
+        createGrid(boxnum, slmallest.width, slmallest.height, canvass1, canvass2, Math.floor(leyway));
+        }
 
       }
 
@@ -100,9 +120,11 @@ document.getElementById('imageForm').addEventListener('submit', async (event) =>
       // for eatch colom in the row
         for (let j = 0; j < boxnum; j++) {
 
+          console.log(`[DEBUG] ${imige1}`); // DEBUG
+          console.log(`[DEBUG] ${imige2}`); // DEBUG
             //GET AVRAGE FROM PIXLE OF EATCH IMIGE
-            var rgbb1 = await getAverageColor(imige1, gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);
-            var rgbb2 = await getAverageColor(imige2, gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);
+            var rgbb1 = await imige1.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);
+            var rgbb2 = await imige2.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);;
 
 
           //// IMIGE 1
@@ -195,45 +217,55 @@ function previwImage(selector) {
   }
 }
 
-  
+
 // get avrage
-function getAverageColor(image, x, y, height, width) {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = width;
-    canvas.height = height;
-    context.drawImage(image, x, y, width, height, 0, 0, width, height);
-    const imageData = context.getImageData(0, 0, width, height).data;
+class cnver{
+  constructor(image, width, height){
+    this.canvas = document.createElement('canvas');
+    this.context = this.canvas.getContext('2d');
 
-    let totalRed = 0;
-    let totalGreen = 0;
-    let totalBlue = 0;
-    let totalPixels = 0;
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.context.drawImage(image, 0, 0, width, height, 0, 0, width, height);
+  }
 
-    
-      const red = imageData[0];
-      const green = imageData[1];
-      const blue = imageData[2];
-
-      totalRed += red;
-      totalGreen += green;
-      totalBlue += blue;
-      totalPixels++;
-
-
-    const averageRed = Math.round(totalRed / totalPixels);
-    const averageGreen = Math.round(totalGreen / totalPixels);
-    const averageBlue = Math.round(totalBlue / totalPixels);
-
-    resolve({
-      r: totalRed,
-      g: totalGreen,
-      b: totalBlue,
+  getAverageColor(x, y, height, width) {
+    return new Promise((resolve, reject) => {
+      
+      const imageData = this.context.getImageData(x, y, width, height).data;
+  
+      let totalRed = 0;
+      let totalGreen = 0;
+      let totalBlue = 0;
+      let totalPixels = 0;
+  
+      
+        const red = imageData[0];
+        const green = imageData[1];
+        const blue = imageData[2];
+  
+        totalRed += red;
+        totalGreen += green;
+        totalBlue += blue;
+        totalPixels++;
+  
+  
+      const averageRed = Math.round(totalRed / totalPixels);
+      const averageGreen = Math.round(totalGreen / totalPixels);
+      const averageBlue = Math.round(totalBlue / totalPixels);
+  
+      resolve({
+        r: totalRed,
+        g: totalGreen,
+        b: totalBlue,
+      });
     });
-  });
-}
+  }
 
+  getctx(){
+    return this;
+  }
+}
 
 // opacity slider
 function opacitySlider(){
@@ -251,8 +283,6 @@ function opacitySlider(){
   }
      
 }
-
-
 function secret(trigger) {
   const kisser1 = document.getElementById('kisser1');
   const kisser2 = document.getElementById('kisser2');
@@ -274,9 +304,7 @@ function secret(trigger) {
 
   }
 }
-
 var badinterval = setInterval(nopeek, 3000);
-
 function nopeek(){
   console.clear();
   console.error('////////////////////////////////////////');
