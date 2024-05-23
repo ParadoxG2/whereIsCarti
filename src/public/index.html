@@ -76,7 +76,7 @@
 
         <div class="formbox">
             <label for="image2">Select second image:</label>
-            <P>THIS IS A MODIFIED IMIGE ANY ALTERED WILL BE MARKED RED</P>
+            <P>ALTERED WILL BE MARKED RED</P>
             <input type="file" id="image2" name="image2" accept="image/png, image/jpeg" onchange="previwImage(2)"><br><br>
             <img class="display" id="display2">
             <div id="gridContainer2"></div>
@@ -87,7 +87,7 @@
         <label for="boxnumber"><b style="color: #ffae00;">Sample size:</b></label>
             <input type="number" id="boxnumber" name="boxnumber" placeholder="Enter number of boxes" required><br><br>
         
-        <label for="pixle"><b style="color: #ffae00;">Pixle Perfect Checks? <i class="fa-solid fa-skull-crossbones" style="color: #ee0c0c;"></i>:</b></label>
+        <label for="pixle"><b style="color: #ffae00;">Pixle Perfect Checks?<i class="fa-solid fa-skull-crossbones" style="color: #ee0c0c;"></i>:</b></label>
             <input type="checkbox" id="pixle" type="ch"><br><br>
             
         <label for="threshold"><b style="color: #ffae00;">Threshold:</b></label>
@@ -99,7 +99,12 @@
 
             <button type="submit">Compare Images</button>
     </form>
+    <p>Two imiges are uploded then their R, G, B, A values are compaird... MIGHT IMPLEMENT AI OBJECT DETECTON FOR FASTER RENDERING</p>
+    <p>In the second box a grid of pixels will be overlayed over the imige a <i class="fa-solid fa-diamond" style="color: #ee0c0c;"></i>(RED) means that the pixle dose not match up with the origonal imige.</p>
+    <p>if the avrage R, G, B, A values are somler enough in it will display a <i class="fa-solid fa-diamond" style="color: #05c72f;"></i>(GREEN) pixle at that spot</p>
     <br>
+    <p>this program works by using the built in canvas.getimigedata() method that returns rgba valuse of what the canvas is rendering in this case a little part of our imige.</p>
+    <p>the grid system is a array of divs being colord</p>
     <br>
     <br>
     <p>Here is a silly cat hehe :3 | stops dancing with browser lag</p> <p id="booptx"></p>
@@ -108,13 +113,15 @@
     <br>
     <br>
     <br>
-    <p>The dimantions of the sample aria are always a box and can not be changed!</p>
-    <p>The sample size is the abount of little squares that is sampeld from the imige <b style="color: #ee0c0c;">MUST BE WITHING ASPECT RATIO OF IMIGE. !! BIG IMPACT ON PERFORMANCE/TIME TILL OUTPUT !!</b> </p>
-    <p>For example, if the image is a 9:9 aspect ratio tou could use 60 or 30 or 150 the imige has to be big enough for some of thoes though.</p>
+    <p>The dimensions of the sample area are always a box and cannot be changed!</p>
+    <p>The sample size is the amount of little squares that are sampled from the image <b style="color: #ee0c0c;">MUST BE WITHIN ASPECT RATIO OF IMAGE. !! BIG IMPACT ON PERFORMANCE/TIME TILL OUTPUT !!</b></p>
+    <p>For example, if the image is a 9:9 aspect ratio, you could use 60 or 30 or 150. The image has to be big enough for some of those though.</p>
     <br>
-    <p> the threthhold is the amount of leyway the algorithm gives the imige when comparing <b>3</b> is a good starting number but feel free to experiment all you want.</p>
-    <p> The bigger the number the more acurate the agorithm will probobly be but it will also probobly miss more spots!!!!! </p>
+    <p>The threshold is the amount of leeway the algorithm gives the image when comparing. <b>3</b> is a good starting number, but feel free to experiment all you want.</p>
+    <p>The bigger the number, the more accurate the algorithm will probably be, but it will also probably miss more spots!!!!!</p>
     <br>
+    <p>The pixel Perfect checks box makes the sample size the exact width and height of the image, so the boxes are exactly one pixel on the image.</p>
+    <p>This will give the best, most clear results, but will take the longest to process, especially if the image is a high-quality image.</p>
     <br>
     <br>
     <br>

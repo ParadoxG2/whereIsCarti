@@ -87,108 +87,145 @@ document.getElementById('imageForm').addEventListener('submit', async (event) =>
   });
 
 
-  // render into grid!!
 
-  async function createGrid(boxnum, gridSizeW, gridSizeH, imige1, imige2, threshold) {
+/////////////////////////
+// render into grid!!  //
+/////////////////////////
+async function createGrid(boxnum, gridSizeW, gridSizeH, imige1, imige2, threshold) {
 
-    // Get contaners for rendering latter on
-    var container1 = await document.getElementById('gridContainer1');
-    container1.innerHTML = ''; // clear canvas
-    var container2 = await document.getElementById('gridContainer2');
-    container2.innerHTML = ''; // clear canvas
+  // Get contaners for rendering latter on
+  var container1 = await document.getElementById('gridContainer1');
+  container1.innerHTML = ''; // clear canvas
+  var container2 = await document.getElementById('gridContainer2');
+  container2.innerHTML = ''; // clear canvas
 
-    // style container1
-    container1.style.transform = await `translatey(-${gridSizeH}px)`;
-    container1.style.width = await gridSizeW + 'px';
-    container1.style.height = await gridSizeH + 'px';
+  // style container1
+  container1.style.transform = await `translatey(-${gridSizeH}px)`;
+  container1.style.width = await gridSizeW + 'px';
+  container1.style.height = await gridSizeH + 'px';
 
-    //style container2
-    container2.style.transform = await `translatey(-${gridSizeH}px)`;
-    container2.style.width = await gridSizeW + 'px';
-    container2.style.height = await gridSizeH + 'px';
-
-
-    // calculate the desierd box size baced off numer of squares.
-    const boxSize = await gridSizeH / boxnum;
-    await console.log(`[DEBUG] ${boxSize}`); // DEBUG
+  //style container2
+  container2.style.transform = await `translatey(-${gridSizeH}px)`;
+  container2.style.width = await gridSizeW + 'px';
+  container2.style.height = await gridSizeH + 'px';
 
 
-    // DRAW THE BOX!!!!!!!!!!!!!!!!!!!
-    // for eatch rows 
-    for (let i = 0; i < boxnum; i++) {
-     
-      // for eatch colom in the row
-        for (let j = 0; j < boxnum; j++) {
-
-          console.log(`[DEBUG] ${imige1}`); // DEBUG
-          console.log(`[DEBUG] ${imige2}`); // DEBUG
-            //GET AVRAGE FROM PIXLE OF EATCH IMIGE
-            var rgbb1 = await imige1.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);
-            var rgbb2 = await imige2.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);;
+  // calculate the desierd box size baced off numer of squares.
+  const boxSize = await gridSizeH / boxnum;
+  await console.log(`[DEBUG] ${boxSize}`); // DEBUG
 
 
-          //// IMIGE 1
+  // DRAW THE BOX!!!!!!!!!!!!!!!!!!!
+  // for eatch rows 
+  for (let i = 0; i < boxnum; i++) {
+    
+    // for eatch colom in the row
+      for (let j = 0; j < boxnum; j++) {
 
-          console.log(rgbb1);
+        console.log(`[DEBUG] ${imige1}`); // DEBUG
+        console.log(`[DEBUG] ${imige2}`); // DEBUG
+          //GET AVRAGE FROM PIXLE OF EATCH IMIGE
+          var rgbb1 = await imige1.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);
+          var rgbb2 = await imige2.getAverageColor(gridSizeW / boxnum * j, gridSizeH / boxnum * i, boxSize, boxSize);;
 
-            // check if avrage collor matches
-            if(rgbb1.r <= rgbb2.r + threshold || rgbb1.g <= rgbb2.g + threshold || rgbb1.b <= rgbb2.b + threshold){
-              var color2 = 'rgb(0, 256, 0)';
-            } else if (rgbb1.r >= rgbb2.r - threshold || rgbb1.g >= rgbb2.g - threshold || rgbb1.b >= rgbb2.b - threshold){
-              var color1 = 'rgb(255, 0, 0)';
+
+        //// IMIGE 1
+
+        console.log(rgbb1);
+
+          // check if avrage collor matches
+
+          if(threshold > 0) {
+
+            if(rgbb1.r >= rgbb2.r - threshold && rgbb1.r <= rgbb2.r + threshold &&
+              rgbb1.g >= rgbb2.g - threshold && rgbb1.g <= rgbb2.g + threshold &&
+              rgbb1.b >= rgbb2.b - threshold && rgbb1.b <= rgbb2.b + threshold){
+              var color1 = `rgb(${rgbb1.r}, ${rgbb1.g}, ${rgbb1.b})`; // it is same
+            } else if (
+              (rgbb1.r >= rgbb2.r - threshold && rgbb1.r <= rgbb2.r + threshold) ||
+              (rgbb1.g >= rgbb2.g - threshold && rgbb1.g <= rgbb2.g + threshold) ||
+              (rgbb1.b >= rgbb2.b - threshold && rgbb1.b <= rgbb2.b + threshold)
+            ) {
+              var color1 = 'rgb(0256 0, 0)';
             } else {
-              console.error('ERROR COMPARING AVRAGE COLORS RENDERING IMIGE NORMALY');
-              var color1 = `rgb(${rgbb1.r}, ${rgbb1.g}, ${rgbb1.b})`
+              var color1 = `rgb(256, 0, 0)`; // it is difrent
             }
 
-            const box1 = await document.createElement('div');
-              box1.style.position = await '  ';
-              box1.style.top = await `${gridSizeH / i}px`;
-              box1.style.left = await `${gridSizeW / j}px`;
-              box1.style.marginLeft = await '0%';
-              box1.style.width = await `${boxSize}px`;
-              box1.style.height = await `${boxSize}px`;
-              box1.style.opacity = await '70%';
-              box1.style.backgroundColor = color1;
-              box1.style.float = await 'left';
-            await container1.appendChild(box1);
-
-          
-          //// IMIGE 2
-
-          console.log(rgbb2);
-
-            // check if avrage collor matches
-            if(rgbb1.r <= rgbb2.r + threshold || rgbb1.g <= rgbb2.g + threshold || rgbb1.b <= rgbb2.b + threshold){
-              var color2 = 'rgb(0, 256, 0)';
-            } else if (rgbb1.r >= rgbb2.r - threshold || rgbb1.g >= rgbb2.g - threshold || rgbb1.b >= rgbb2.b - threshold){
-              var color2 = 'rgb(255, 0, 0)';
+        } else {
+            
+            if(rgbb1.r == rgbb2.r && rgbb1.g == rgbb2.g && rgbb1.b == rgbb2.b){
+              var color1 = `rgb(0, 256, 0)`; // it is same
             } else {
-              console.error('ERROR COMPARING AVRAGE COLORS RENDERING IMIGE NORMALY');
-              var color2 = `rgb(${rgbb2.r}, ${rgbb2.g}, ${rgbb2.b})`
+              var color1 = `rgb(256, 0, 0)`; // it is difrent
             }
-
-            const box2 = await document.createElement('div');
-              box2.style.position = await '  ';
-              box2.style.top = await `${gridSizeH / i}px`;
-              box2.style.left = await `${gridSizeW / j}px`;
-              box2.style.marginLeft = await '0%';
-              box2.style.width = await `${boxSize}px`;
-              box2.style.height = await `${boxSize}px`;
-              box2.style.opacity = await '70%';
-              box2.style.backgroundColor = color2;
-              box2.style.float = await 'left';
-            await container2.appendChild(box2);
 
         }
 
-    }
+          const box1 = await document.createElement('div');
+            box1.style.position = await '  ';
+            box1.style.top = await `${gridSizeH / i}px`;
+            box1.style.left = await `${gridSizeW / j}px`;
+            box1.style.marginLeft = await '0%';
+            box1.style.width = await `${boxSize}px`;
+            box1.style.height = await `${boxSize}px`;
+            box1.style.opacity = await '70%';
+            box1.style.backgroundColor = color1;
+            box1.style.float = await 'left';
+          await container1.appendChild(box1);
 
+        
+        //// IMIGE 2
+
+        console.log(rgbb2);
+
+          // check if avrage collor matches
+          if(threshold > 0) {
+
+            if(rgbb1.r >= rgbb2.r - threshold && rgbb1.r <= rgbb2.r + threshold &&
+              rgbb1.g >= rgbb2.g - threshold && rgbb1.g <= rgbb2.g + threshold &&
+              rgbb1.b >= rgbb2.b - threshold && rgbb1.b <= rgbb2.b + threshold){
+              var color2 = `rgb(0, 256, 0)`; // it is same
+            } else if (
+              (rgbb1.r >= rgbb2.r - threshold && rgbb1.r <= rgbb2.r + threshold) ||
+              (rgbb1.g >= rgbb2.g - threshold && rgbb1.g <= rgbb2.g + threshold) ||
+              (rgbb1.b >= rgbb2.b - threshold && rgbb1.b <= rgbb2.b + threshold)
+            ) {
+              var color2 = 'rgb(0256 0, 0)';
+            } else {
+              var color2 = `rgb(256, 0, 0)`; // it is difrent
+            }
+
+        } else {
+            
+            if(rgbb1.r == rgbb2.r && rgbb1.g == rgbb2.g && rgbb1.b == rgbb2.b){
+              var color2 = `rgb(0, 256, 0)`; // it is same
+            } else {
+              var color2 = `rgb(256, 0, 0)`; // it is difrent
+            }
+
+        }
+
+          const box2 = await document.createElement('div');
+            box2.style.position = await '  ';
+            box2.style.top = await `${gridSizeH / i}px`;
+            box2.style.left = await `${gridSizeW / j}px`;
+            box2.style.marginLeft = await '0%';
+            box2.style.width = await `${boxSize}px`;
+            box2.style.height = await `${boxSize}px`;
+            box2.style.opacity = await '70%';
+            box2.style.backgroundColor = color2;
+            box2.style.float = await 'left';
+          await container2.appendChild(box2);
+
+      }
 
   }
 
 
+}
 
+
+// image processing functions
 function getDimentions(image){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -203,22 +240,6 @@ function getDimentions(image){
   });
 }
 
-function previwImage(selector) {
-
-  if(selector === 1){
-    const image1 = document.getElementById('image1').files[0];
-    var display1 = document.getElementById('display1');
-    display1.src = URL.createObjectURL(image1);
-
-  } else if (selector === 2){
-    const image2 = document.getElementById('image2').files[0];
-    var display2 = document.getElementById('display2');
-    display2.src = URL.createObjectURL(image2);
-  }
-}
-
-
-// get avrage
 class cnver{
   constructor(image, width, height){
     this.canvas = document.createElement('canvas');
@@ -267,7 +288,21 @@ class cnver{
   }
 }
 
-// opacity slider
+// look and styling fuctions
+function previwImage(selector) {
+
+  if(selector === 1){
+    const image1 = document.getElementById('image1').files[0];
+    var display1 = document.getElementById('display1');
+    display1.src = URL.createObjectURL(image1);
+
+  } else if (selector === 2){
+    const image2 = document.getElementById('image2').files[0];
+    var display2 = document.getElementById('display2');
+    display2.src = URL.createObjectURL(image2);
+  }
+}
+
 function opacitySlider(){
   console.log("Opacity slider");
   const slider = document.getElementById('opacity').value;
@@ -283,6 +318,7 @@ function opacitySlider(){
   }
      
 }
+
 function secret(trigger) {
   const kisser1 = document.getElementById('kisser1');
   const kisser2 = document.getElementById('kisser2');
@@ -304,6 +340,7 @@ function secret(trigger) {
 
   }
 }
+
 var badinterval = setInterval(nopeek, 3000);
 function nopeek(){
   console.clear();
